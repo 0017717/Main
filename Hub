@@ -5,7 +5,7 @@ local human = char.Humanoid
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local runService = game:GetService("RunService")
 local RenderPath = replicatedStorage.D8ClientFramework.Services.NPCService.Resources.RenderObject.RenderContainer
-local Camera = game.workspace.Camera
+local Camera = game.workspace.CurrentCamera
 
 local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
 local SaveManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ActualMasterOogway/Fluent-Renewed/master/Addons/SaveManager.luau"))()
@@ -41,7 +41,6 @@ local Tabs = {
 
 --// Lists
 local mobFolder = game.Workspace.CurrentCamera  -- Directly access the property
-local localPlayer = game:GetService("Players").LocalPlayer
 
 local mobList = {}
 local mobNameDictionary = {} -- Use a dictionary to track mob names
@@ -49,7 +48,6 @@ local mobNameDictionary = {} -- Use a dictionary to track mob names
 local function populateMobList()
     mobList = {}
     mobNameDictionary = {} -- Clear the dictionary each time
-
     for i, v in ipairs(mobFolder:GetChildren()) do
         if v:IsA("Model") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v.Name and string.find(v.Name, "Lvl") then
             if localPlayer and not string.find(v.Name, localPlayer.Name) then
@@ -117,15 +115,13 @@ do
 			Title = "Mob List",
 			Values = mobList,
 			Multi = false,
-			Default = nil,
+			Default = mobList[1],
 		})
 
 		Tabs.Main:CreateButton{
 			Title = "Refresh Mob List",
 			Description = "Refresh mob list, only get mob in available vision range.",
-			Callback = function()
-                populateMobList()
-			end
+			Callback = populateMobList()
 		}
 
 		local MobFarm = Tabs.Main:CreateToggle("MobFarm",
