@@ -121,7 +121,11 @@ do
 		Tabs.Main:CreateButton{
 			Title = "Refresh Mob List",
 			Description = "Refresh mob list, only get mob in available vision range.",
-			Callback = populateMobList()
+			Callback = function()
+                for i, mobName in ipairs(mobList) do
+                    MobList.Values = mobList[i]
+                end
+            end
 		}
 
 		local MobFarm = Tabs.Main:CreateToggle("MobFarm",
@@ -201,7 +205,6 @@ do
                                 SubContent = "nil", -- Optional
                                 Duration = nil -- Set to nil to make the notification not disappear
                             }
-							repeat task.wait() until RenderPath["[Lvl: 100] - Judy - [Raid]"].Humanoid.Health == 0
                         end
                     end
                 end
