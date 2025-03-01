@@ -123,29 +123,8 @@ do
 		Tabs.Main:CreateButton{
 			Title = "Refresh Mob List",
 			Description = "Refresh mob list, only get mob in available vision range.",
-			Callback = function(ChosenMob)
-                mobList = {}
-                mobNameDictionary = {} -- Clear the dictionary each time
-            
-                for i, v in ipairs(mobFolder:GetChildren()) do
-                    if v:IsA("Model") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v.Name and string.find(v.Name, "Lvl") then
-                        if localPlayer and not string.find(v.Name, localPlayer.Name) then
-                            -- Check if the mob name is already in the dictionary
-                            if not mobNameDictionary[v.Name] then
-                                -- If not, add it to the dictionary and the list
-                                mobNameDictionary[v.Name] = true  -- Mark it as seen
-                                table.insert(mobList, v.Name)
-                            end
-                        elseif not localPlayer then
-                            -- Check if the mob name is already in the dictionary
-                            if not mobNameDictionary[v.Name] then
-                                -- If not, add it to the dictionary and the list
-                                mobNameDictionary[v.Name] = true  -- Mark it as seen
-                                table.insert(mobList, v.Name)
-                            end
-                        end
-                    end
-                end
+			Callback = function()
+                populateMobList()
 			end
 		}
 
