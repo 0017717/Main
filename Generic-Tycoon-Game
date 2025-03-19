@@ -5,6 +5,12 @@ local human = char:WaitForChild("Humanoid")
 local humanoidRootPart = char:WaitForChild("HumanoidRootPart")
 local tweenService = game:GetService('TweenService')
 
+UserInputService = game:GetService("UserInputService")
+local IsOnMobile = table.find({
+	Enum.Platform.IOS,
+	Enum.Platform.Android
+}, UserInputService:GetPlatform())
+
 local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
 local SaveManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ActualMasterOogway/Fluent-Renewed/master/Addons/SaveManager.luau"))()
 local InterfaceManager = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ActualMasterOogway/Fluent-Renewed/master/Addons/InterfaceManager.luau"))()
@@ -29,6 +35,10 @@ local Tabs = {
     Humanoid = Window:CreateTab{
         Title = "Humanoid",
         Icon = "phosphor-user-gear-bold"
+    },
+    Debug = Window:CreateTab{
+        Title = "Debug",
+        Icon = "phosphor-wrench-bold"
     },
     Settings = Window:CreateTab{
         Title = "Settings",
@@ -138,6 +148,108 @@ do
                 Default = false
             })
 
+            local IY = Tabs.Main:CreateButton{
+                Title = "IY",
+                Description = "Run Infinite Yield.",
+            Callback = function()   
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+            end
+            }
+
+            local Dex = Tabs.Main:CreateButton{
+                Title = "Dex",
+                Description = "Run Dex Explorer.",
+            Callback = function()   
+                if IsOnMobile then
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/Dex/Mobile%20Dex%20Explorer.txt"))()
+                else
+                    Window:Dialog{
+                        Title = "Dex Explorer",
+                        Content = "Choose a version you want to run.",
+                        Buttons = {
+                            {
+                                Title = "V2",
+                                Callback = function()
+                                    loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex%20Explorer.txt"))()
+                                end
+                            },
+                            {
+                                Title = "V3",
+                                Callback = function()
+                                    loadstring(game:HttpGet("https://raw.githubusercontent.com/0017717/bk/refs/heads/main/odex"))()
+                                end
+                            },
+                            {
+                                Title = "V3 New",
+                                Callback = function()
+                                    loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+                                end
+                            },
+                            {
+                                Title = "Babyhamsta's V3",
+                                Callback = function()
+                                    loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
+                                end
+                            },
+                        }
+                    }
+                end
+            end
+            }
+            local HS = Tabs.Main:CreateButton{
+                Title = "HTTPSpy",
+                Description = "Run HTTP Spy.",
+            Callback = function()   
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Httpspy/main/httpspy.txt"))()
+            end
+            }
+            local REGUI = Tabs.Main:CreateButton{
+                Title = "RemoteEvent",
+                Description = "Run RemoteEvent trigger GUI.",
+            Callback = function()   
+                Window:Dialog{
+                    Title = "RemoteEvent",
+                    Content = "Choose a type you want to run.",
+                    Buttons = {
+                        {
+                            Title = "FireServer",
+                            Callback = function()
+                                loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gameremotefireserver.lua"))()
+                            end
+                        },
+                        {
+                            Title = "InvokeClient",
+                            Callback = function()
+                                loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gameremoteinvokeclient.lua"))()
+                            end
+                        },
+                        {
+                            Title = "InvokeServer",
+                            Callback = function()
+                                loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gameinvokeserver.lua"))()
+                            end
+                        },
+                        {
+                            Title = "All",
+                            Callback = function()
+                                loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gameremotefireserver.lua"))()
+                                loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gameremoteinvokeclient.lua"))()
+                                loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gameinvokeserver.lua"))()
+                            end
+                        },
+                    }
+                }
+            end
+            local SPV = Tabs.Main:CreateButton{
+                Title = "Dimension Viewer",
+                Description = "View related places of current place.",
+            Callback = function()   
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/subplaceviewer.txt"))()
+            end
+            }
+            }
+            
+
     --// Callbacks
     FoodTP:OnChanged(
         function()
@@ -188,12 +300,13 @@ task.spawn(function()
                     local tween = tweenService:Create(humanoidRootPart, TweenInfo.new(Options.FoodTP_TS.Value), {CFrame = targetCFrame})
                     tween:Play()
                     tween.Completed:Wait() -- Wait for tween to finish before moving on to the next part
+                    tweenService:Create(humanoidRootPart, TweenInfo.new(0), {CFrame = a}):Play()
                 end
             end
             hasTeleported = false
         elseif not hasTeleported then
-            local a = Status.FoodTP.SavedPos * CFrame.new(0,2,0)
-        tweenService:Create(humanoidRootPart, TweenInfo.new(0.05), {CFrame = a}):Play()
+            local a = Status.FoodTP.SavedPos
+        tweenService:Create(humanoidRootPart, TweenInfo.new(0), {CFrame = a}):Play()
          hasTeleported = true
     end
         end
