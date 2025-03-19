@@ -148,7 +148,7 @@ do
                 Default = false
             })
 
-            local IY = Tabs.Main:CreateButton{
+            local IY = Tabs.Debug:CreateButton{
                 Title = "IY",
                 Description = "Run Infinite Yield.",
             Callback = function()   
@@ -156,7 +156,7 @@ do
             end
             }
 
-            local Dex = Tabs.Main:CreateButton{
+            local Dex = Tabs.Debug:CreateButton{
                 Title = "Dex",
                 Description = "Run Dex Explorer.",
             Callback = function()   
@@ -196,14 +196,14 @@ do
                 end
             end
             }
-            local HS = Tabs.Main:CreateButton{
+            local HS = Tabs.Debug:CreateButton{
                 Title = "HTTPSpy",
                 Description = "Run HTTP Spy.",
             Callback = function()   
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Httpspy/main/httpspy.txt"))()
             end
             }
-            local REGUI = Tabs.Main:CreateButton{
+            local REGUI = Tabs.Debug:CreateButton{
                 Title = "RemoteEvent",
                 Description = "Run RemoteEvent trigger GUI.",
             Callback = function()   
@@ -241,7 +241,7 @@ do
                 }
             end
         }
-            local SPV = Tabs.Main:CreateButton{
+            local SPV = Tabs.Debug:CreateButton{
                 Title = "Dimension Viewer",
                 Description = "View related places of current place.",
             Callback = function()   
