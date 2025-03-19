@@ -2,6 +2,7 @@ local players = game:GetService("Players")
 local localPlayer = players.LocalPlayer
 local char = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 local human = char:WaitForChild("Humanoid")
+local humanoidRootPart = char:WaitForChild("HumanoidRootPart")
 local tweenService = game:GetService('TweenService')
 
 local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOogway/Fluent-Renewed/releases/latest/download/Fluent.luau"))()
@@ -41,7 +42,8 @@ local Options = Library.Options
 local Status = {
     FoodTP = {
         Enabled = false,
-        Speed = 2,
+        Speed = 1,
+        SavedPos = humanoidRootPart.CFrame,
     },
     HumanoidModify = {
         WS = {
@@ -63,7 +65,7 @@ local Status = {
 do
     local FoodTP_TS = Tabs.Main:CreateSlider("FoodTP_TS", {
         Title = "Tween Speed",
-        Description = "Modify Food TP's tween speed. (Low value = faster)",
+        Description = "Modify Food TP's tween speed. (Low value = faster but easier to cause glitch)",
         Default = Status.FoodTP.Speed,
         Min = 0.7,
         Max = 5,
@@ -72,10 +74,20 @@ do
         end
     }) 
 
+    local FoodTP_Pos = Tabs.Main:CreateButton{
+        Title = "Save Position",
+        Description = "Save a position, player will teleport back to this position after the Food TP disabled.",
+    Callback = function()   
+    Status.FoodTP.SavedPos = humanoidRootPart.CFrame
+    end
+    }
+
     local FoodTP = Tabs.Main:CreateToggle("FoodTP",
         {Title = "Food TP (Tween)",
             Default = false
         })
+    
+    
 
 
     local WSS = Tabs.Humanoid:CreateSlider("WSS", {
@@ -155,23 +167,32 @@ do
 
 
 --// Functions
+local vu = game:GetService("VirtualUser")game:GetService("Players").LocalPlayer.Idled:connect(function() vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame) wait(1) vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)end)
+for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+    v:Disable()
+    end
+
 local path = game.workspace.Growables
 
+
 task.spawn(function()
+    local hasTeleported = false
     while task.wait() do
         if Status.FoodTP.Enabled then
-
+            
             for i, v in path:GetChildren() do
                 if v:IsA("BasePart") then -- Crucial check to only tween to BaseParts.  Otherwise, you'll try to tween to folders, etc. which will cause errors.
-                    -- Calculate a CFrame slightly above the part to avoid ground sticking.
                     local targetCFrame = v.CFrame * CFrame.new(0, 2, 0) -- Move 2 studs up
-        
-                    local tween = tweenService:Create(char.HumanoidRootPart, TweenInfo.new(Options.FoodTP_TS.Value), {CFrame = targetCFrame})
+                    local tween = tweenService:Create(humanoidRootPart, TweenInfo.new(Options.FoodTP_TS.Value), {CFrame = targetCFrame})
                     tween:Play()
                     tween.Completed:Wait() -- Wait for tween to finish before moving on to the next part
                 end
             end
-
+            hasTeleported = false
+        elseif not hasTeleported then
+            local a = Status.FoodTP.SavedPos * CFrame.new(0,2,0)
+        tweenService:Create(humanoidRootPart, TweenInfo.new(0.05), {CFrame = a}):Play()
+         hasTeleported = true
     end
         end
     end
