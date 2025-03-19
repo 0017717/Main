@@ -240,13 +240,13 @@ do
                     }
                 }
             end
+        }
             local SPV = Tabs.Main:CreateButton{
                 Title = "Dimension Viewer",
                 Description = "View related places of current place.",
             Callback = function()   
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/subplaceviewer.txt"))()
             end
-            }
             }
             
 
