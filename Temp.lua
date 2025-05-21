@@ -3,23 +3,6 @@ local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
 local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
 local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
 
-local GC = getconnections or get_signal_cons
-	if GC then
-		for i,v in pairs(GC(Players.LocalPlayer.Idled)) do
-			if v["Disable"] then
-				v["Disable"](v)
-			elseif v["Disconnect"] then
-				v["Disconnect"](v)
-			end
-		end
-	else
-		local VirtualUser = cloneref(game:GetService("VirtualUser"))
-		Players.LocalPlayer.Idled:Connect(function()
-			VirtualUser:CaptureController()
-			VirtualUser:ClickButton2(Vector2.new())
-		end)
-	end
-
 local Options = Library.Options
 local Toggles = Library.Toggles
 
@@ -48,6 +31,11 @@ local plrs = game:GetService("Players")
 local plr = plrs.LocalPlayer
 local char = plr.Character
 local hum = char.Humanoid
+
+local bb=game:GetService('VirtualUser')
+plr.Idled:connect(function()
+bb:CaptureController()
+bb:ClickButton2(Vector2.new())
 
 plr.PlayerScripts:WaitForChild('idler'):Destroy()
 
