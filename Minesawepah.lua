@@ -56,20 +56,15 @@ local function clickCell(part)
         return false 
     end
     
-    print("Checking part:", part.Name, "Color:", printColor(part.Color))
-    
     local clickDetector = part:FindFirstChild("ClickDetector")
     if not clickDetector then 
-        print("Error: No ClickDetector found for", part.Name)
         return false 
     end
     
-    print("Clicking", part.Name)
     fireclickdetector(clickDetector)
     
     if isMine(part) then
         mistakes = mistakes + 1
-        print("Hit mine! Mistakes:", mistakes)
         if mistakes > maxMistakes then
             print("Too many mistakes, resetting...")
             fireclickdetector(resetButton)
@@ -80,21 +75,15 @@ local function clickCell(part)
     return true
 end
 
-local function solve()
-    print("Starting solver...")
-    
+local function solve() 
     while true do
         local changed = false
         
         -- Get fresh state of all parts each iteration
-        local allParts = cells:GetChildren()
-        print("Current parts state:", #allParts)
-        
+        local allParts = cells:GetChildren()     
         -- Click all safe parts first
         for _, part in ipairs(allParts) do
-            print("Checking part:", part.Name, "Color:", printColor(part.Color))
             if isSafe(part) then
-                print("Found safe part:", part.Name)
                 if clickCell(part) then
                     changed = true
                     task.wait(0.1)
@@ -107,12 +96,9 @@ local function solve()
             local hiddenParts = {}
             for _, part in ipairs(allParts) do
                 if isHidden(part) then
-                    print("Found hidden part:", part.Name, "Color:", printColor(part.Color))
                     table.insert(hiddenParts, part)
                 end
             end
-            
-            print("Found", #hiddenParts, "hidden parts")
             
             if #hiddenParts == 0 then
                 print("Game completed - no hidden parts left!")
@@ -120,7 +106,6 @@ local function solve()
             end
             
             local randomPart = hiddenParts[math.random(#hiddenParts)]
-            print("Selected random part:", randomPart.Name)
             clickCell(randomPart)
         end
         
@@ -139,29 +124,15 @@ local function playGames()
     
     while true do
         gamesPlayed = gamesPlayed + 1
-        print(string.format("\n=== Starting Game #%d ===", gamesPlayed))
-        
-        -- Reset mistakes counter for new game
         mistakes = 0
-        
-        -- Try to solve the game
         solve()
-        
-        -- After solve() returns, wait and reset for next game
-        print(string.format("=== Game #%d Finished ===", gamesPlayed))      
-        -- Click reset button to start new game
-        print("Resetting game...")
         fireclickdetector(resetButton)
         task.wait(0.5)
     end
 end
 
--- Modified start section
-print("Script started - checking cells folder...")
 if cells then
-    print("Cells folder found")
     if resetButton then
-        print("Reset button found")
         playGames() -- Call playGames instead of solve
     else
         print("Error: Reset button not found")
