@@ -101,7 +101,6 @@ local function solve()
             end
             
             if #hiddenParts == 0 then
-                print("Game completed - no hidden parts left!")
                 return
             end
             
