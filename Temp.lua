@@ -32,11 +32,6 @@ local plr = plrs.LocalPlayer
 local char = plr.Character
 local hum = char.Humanoid
 
-local bb=game:GetService('VirtualUser')
-plr.Idled:connect(function()
-bb:CaptureController()
-bb:ClickButton2(Vector2.new())
-
 plr.PlayerScripts:WaitForChild('idler'):Destroy()
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
