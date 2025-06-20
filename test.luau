@@ -205,6 +205,8 @@ local Tabs = {
 
 -- Tabs, etc.
 local M_LTB = Tabs.Main:AddLeftTabbox()
+local T1 = M_LTB:AddTab("User")
+local T2 = M_LTB:AddTab("Updates")
 T1:AddLabel("<b>User</b>")
 T1:AddLabel({
     Text = "Executor: "..identifyexecutor() or "N/A",
