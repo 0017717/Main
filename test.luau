@@ -235,8 +235,8 @@ local function Bulma()
                         local wishNumber = wishMapping[chosenWishName]
                         if wishNumber then
                             Remotes.Ability:InvokeServer(bulma, 1)
-                            task.wait(4)
-                            Remotes.Auto:FireServer(bulma, wishNumber, true)
+                            task.wait(10)
+                            Remotes.Ability:InvokeServer(bulma, wishNumber)
                             task.wait(2)
                             Flags.Auto.Ability.Special.Bulma.Used = true
                         end
