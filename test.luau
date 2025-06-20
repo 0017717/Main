@@ -29,7 +29,7 @@ for i,v in pairs(Bottom:GetChildren()) do
                 for c,d in pairs(b:GetChildren()) do
                     if d.LayoutOrder == 1 and d:IsA('TextButton') then
                 local txt = d:FindFirstChild('TextLabel')
-                if txt and txt.Text and txt.Text:find("Start",1,true) then
+                if txt and txt.Text and txt.Text == 'Start' then
                     StartButton = d
                 end
                 end
