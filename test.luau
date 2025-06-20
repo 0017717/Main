@@ -176,6 +176,7 @@ local function Bulma()
                             Remotes.Ability:InvokeServer(bulma, 1)
                             task.wait(4)
                             Remotes.Ability:InvokeServer(bulma, wishNumber)
+                            task.wait(2)
                             Flags.Auto.Ability.Special.Bulma.Used = true
                         end
                     end
