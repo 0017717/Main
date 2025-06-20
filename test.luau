@@ -470,8 +470,8 @@ G_T1:AddCheckbox("G_AutoAbility", {
 })
 
 G_T2:AddDropdown("G_Special_BulmaWish", {
-    Values = {'Time', 'Wealth', 'Power'},
-    Default = "Time",
+    Values = {'Power', 'Time', 'Wealth'},
+    Default = "Power",
     Multi = false,
     Text = "Select Wish",
     Callback = function(Value) Options.G_Special_BulmaWish.Value = Value end
