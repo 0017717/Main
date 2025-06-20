@@ -1,5 +1,16 @@
 repeat task.wait() until game:IsLoaded()
 
+-- // Services
+local queueteleport = queue_on_teleport
+
+local Plrs = cloneref(game:GetService("Players"))
+local Plr = Plrs.LocalPlayer or Plrs.PlayerAdded:Wait()
+local PGui = Plr:WaitForChild("PlayerGui")
+
+local RS = cloneref(game:GetService("ReplicatedStorage"))
+local MS = cloneref(game:GetService("MarketplaceService"))
+local Asset = MS:GetProductInfo(game.PlaceId)
+
 -- // Variables
 local PIDs = {
     W1 = 12886143095,
@@ -27,17 +38,6 @@ for i,v in pairs(Bottom:GetChildren()) do
     end
 end
 end
-
--- // Services
-local queueteleport = queue_on_teleport
-
-local Plrs = cloneref(game:GetService("Players"))
-local Plr = Plrs.LocalPlayer or Plrs.PlayerAdded:Wait()
-local PGui = Plr:WaitForChild("PlayerGui")
-
-local RS = cloneref(game:GetService("ReplicatedStorage"))
-local MS = cloneref(game:GetService("MarketplaceService"))
-local Asset = MS:GetProductInfo(game.PlaceId)
 
 --// UI Lib Init
 local Repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/refs/heads/main/"
@@ -255,13 +255,13 @@ end
 local function Bulma()
     local wishMapping = {Power = 1, Time = 2, Wealth = 3}
      if Toggles.G_Special_Bulma.Value and not Flags.Auto.Ability.Special.Bulma.Used and not StartButton then
-                local bulma = workspace.Towers:FindFirstChild("Bulma")
+                local bulma = workspace.Towers:WaitForChild("Bulma")
                 if bulma then
-                    local wishMeter = bulma:FindFirstChild("Meters") and bulma.Meters:FindFirstChild("Wish Balls")
+                    local wishMeter = bulma:WaitForChild("Meters") and bulma.Meters:FindFirstChild("Wish Balls")
                     if wishMeter then
                         local currentValue = wishMeter:GetAttribute("Value")
                         local maxValue = wishMeter:GetAttribute("MaxValue")
-                        if currentValue == maxValue and bulma:WaitForChild('Stunned').Value == false then
+                        if currentValue >= maxValue and bulma:WaitForChild('Stunned').Value == false then
                             task.wait(3)
                             local chosenWishName = Options.G_Special_BulmaWish.Value
                             local wishNumber = wishMapping[chosenWishName]
@@ -277,7 +277,7 @@ local function Bulma()
                 end
             end
 
-            if Flags.Auto.Ability.Special.Bulma.Used and PlayerGui:FindFirstChild("EndGameUI") then
+            if Flags.Auto.Ability.Special.Bulma.Used and PlayerGui:WaitForChild("EndGameUI") then
                 Flags.Auto.Ability.Special.Bulma.Used = false
             end
 end
