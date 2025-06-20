@@ -57,6 +57,9 @@ end
 
 pcall(function() getgenv().script_LOADED = true end)
 
+if StartButton then
+    Library:Notify('Required to start round for script to load.',5)
+end
 repeat task.wait(1) until not StartButton
 
 -- // Game Flags
