@@ -20,7 +20,7 @@ local MS = cloneref(game:GetService("MarketplaceService"))
 local Asset = MS:GetProductInfo(game.PlaceId)
 
 --// UI Lib Init
-local Repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
+local Repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/refs/heads/main/"
 local Library = loadstring(game:HttpGet(Repo .. "Library.lua"))()
 local ThemeManager = loadstring(game:HttpGet(Repo .. "addons/ThemeManager.lua"))()
 local SaveManager = loadstring(game:HttpGet(Repo .. "addons/SaveManager.lua"))()
@@ -57,11 +57,11 @@ local Flags = {
 }
 
 -- // PIDs.Game Varibles
+local PATH = RS.Remotes
 local Remotes = {
-    local PATH = RS.Remotes,
-        CardAction = PATH.CardAction,
-        Ability = PATH.Ability,
-        Auto = PATH.ToggleAutoUse
+    CardAction = PATH.CardAction,
+    Ability = PATH.Ability,
+    Auto = PATH.ToggleAutoUse
 }
 
 -- // Tables
@@ -151,6 +151,7 @@ local function Refresh(PATH, name, types, children)
         end
     end
 end
+
 local Bottom = PGui:WaitForChild("Bottom").Frame
 local StartButton = nil
 
@@ -483,9 +484,6 @@ G_T2:AddCheckbox("G_Special_Bulma", {
     end
 })
 
-
-
-
 -- // UI Settings
 local MenuGroup = Tabs["UI Settings"]:AddLeftGroupbox("Menu", "wrench")
 local originalUnload = Library.Unload
@@ -542,8 +540,9 @@ SaveManager:SetFolder("coolstuff/als-autocard")
 SaveManager:BuildConfigSection(Tabs["UI Settings"])
 ThemeManager:ApplyToTab(Tabs["UI Settings"])
 
-repeat task.wait() until not StartButton
+if not StartButton then
 Refresh(Plr:WaitForChild('Slots'), AbilityList, 'table' ,'Value')
 ABL:SetValues(AbilityList)
+end
 
 SaveManager:LoadAutoloadConfig()
