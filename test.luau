@@ -146,7 +146,7 @@ end
     -- // Local
 local function Refresh(PATH, name, types, children)
     if types == "table" then
-        for i, v in pairs(PATH) do
+        for i, v in pairs(PATH:GetChildren()) do
             table.insert(name, v[children])
         end
     end
@@ -170,10 +170,11 @@ for i,v in pairs(Bottom:GetChildren()) do
         end
     end
 end
+end
     -- // Callbacks
         -- // Boss Rush
 local function autoSelectCard()
-    while Toggles.cselect.Value do
+    while Toggles.BR_Toggle.Value do
         task.wait(0.25)
         local pG = PGui:FindFirstChild("Prompt")
         if pG and pG.Parent then
@@ -248,7 +249,7 @@ end
         -- Bulma
 local function Bulma()
     local wishMapping = {Power = 1, Time = 2, Wealth = 3}
-     if Toggles.Game_Ability_AutoBulma.Value and not Flags.Auto.Ability.Special.Bulma.Used and not StartButton then
+     if Toggles.G_Special_Bulma.Value and not Flags.Auto.Ability.Special.Bulma.Used and not StartButton then
                 local bulma = workspace.Towers:FindFirstChild("Bulma")
                 if bulma then
                     local wishMeter = bulma:FindFirstChild("Meters") and bulma.Meters:FindFirstChild("Wish Balls")
@@ -256,7 +257,7 @@ local function Bulma()
                         local currentValue = wishMeter:GetAttribute("Value")
                         local maxValue = wishMeter:GetAttribute("MaxValue")
                         if currentValue and maxValue and maxValue > 0 and currentValue >= maxValue and bulma:WaitForChild('Stunned').Value == false then
-                            local chosenWishName = Options.Game_Ability_Bulma.Value
+                            local chosenWishName = Options.G_Special_BulmaWish.Value
                             local wishNumber = wishMapping[chosenWishName]
                             if wishNumber then
                                 Remotes.Ability:InvokeServer(bulma, 1)
