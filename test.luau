@@ -204,11 +204,22 @@ local Tabs = {
 
 -- Tabs, etc.
 local M_LTB = Tabs.Main:AddLeftTabbox()
-local T1, T2 = M_LTB:AddTab("User"), M_LTB:AddTab("Updates")
-T1:AddLabel("<b>User</b>\nExecutor: " .. (identifyexecutor and identifyexecutor() or "N/A"))
+T1:AddLabel("<b>User</b>")
+T1:AddLabel({
+    Text = "Executor: "..identifyexecutor() or "N/A",
+    DoesWrap = true
+})
 T1:AddDivider()
-T1:AddLabel("<b>Game</b>\nName: " .. Asset.Name .. "\nID: " .. game.PlaceId .. "\nPlayers: " .. #Plrs:GetPlayers())
-T2:AddLabel("<b>mega upd 6/19/25</b>\n- tabs<br/> automation (fuck ts)<br/>    + ability (trash ngl dont expect ts to work)<br/> +main (ts)\n<b>6/18/25</b><br/> -exist")
+T1:AddLabel("<b>Game</b>")
+T1:AddLabel({
+    Text = "Name: "..Asset.Name.."\nID: "..game.PlaceId.."\nPlayers: "..#Players:GetPlayers().."\nMax Players: "..Players.MaxPlayers.."",
+    DoesWrap = true
+})
+T2:AddLabel("<b>mega upd 6/19/25</b>")
+T2:AddLabel({
+    Text = "- tabs<br/> automation (fuck ts)<br/>    + ability (trash ngl dont expect ts to work)<br/> +main (ts)\n<b>6/18/25</b><br/> -exist",
+    DoesWrap = true
+})
 
 local teleportConnection = nil
 Tabs.Main:AddLeftGroupbox('Misc', 'wrench'):AddCheckbox("Main_AutoExec", {
@@ -288,7 +299,8 @@ G_T2:AddCheckbox("G_Special_Bulma", { Text = "Auto Use Bulma Wish", Default = fa
 })
 
 local originalUnload = Library.Unload
-Tabs["UI Settings"]:AddLeftGroupbox("Menu", "wrench"):AddButton("Unload", function()
+local MenuGroup = Tabs["UI Settings"]:AddLeftGroupbox("Menu", "wrench")
+MenuGroup:AddButton("Unload", function()
     getgenv().script_LOADED = false
     if teleportConnection then teleportConnection:Disconnect(); teleportConnection = nil end
     cancelThreadsInTable(Flags)
