@@ -497,9 +497,9 @@ local originalUnload = Library.Unload
 
 MenuGroup:AddButton("Unload", function()
     getgenv().script_LOADED = false
-    if teleportConnection then
-        teleportConnection:Disconnect()
-        teleportConnection = nil
+    if hasTP then
+        hasTP:Disconnect()
+        hasTP = nil
     end
     cancelThreadsInTable(Flags)
     originalUnload(Library)
