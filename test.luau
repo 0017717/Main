@@ -8,6 +8,26 @@ local PIDs = {
     AFK = 14368918515,
 }
 
+local Bottom = PGui:WaitForChild("Bottom").Frame
+local StartButton = nil
+
+for i,v in pairs(Bottom:GetChildren()) do
+    if v.Position == UDim2.fromScale(0.5, 1) then
+        for a,b in pairs(v:GetChildren()) do
+            if b:IsA('Frame') and b.Size == UDim2.fromScale(1,0) and b.Size == UDim2.fromOffset(0,56) then
+                for c,d in pairs(b:GetChildren()) do
+                    if d.LayoutOrder == 1 and d:IsA('TextButton') then
+                local txt = d:FindFirstChild('TextLabel')
+                if txt and txt.Text and txt.Text:find("Start",1,true) then
+                    StartButton = d
+                end
+                end
+            end
+        end
+    end
+end
+end
+
 -- // Services
 local queueteleport = queue_on_teleport
 
@@ -36,6 +56,8 @@ if game.PlaceId ~= PIDs.GAME then
 end
 
 pcall(function() getgenv().script_LOADED = true end)
+
+repeat task.wait(1) until not StartButton
 
 -- // Game Flags
 local Flags = {
@@ -151,26 +173,6 @@ local function Refresh(PATH, name, types, children)
         end
     end
 end
-
-local Bottom = PGui:WaitForChild("Bottom").Frame
-local StartButton = nil
-
-for i,v in pairs(Bottom:GetChildren()) do
-    if v.Position == UDim2.fromScale(0.5, 1) then
-        for a,b in pairs(v:GetChildren()) do
-            if b:IsA('Frame') and b.Size == UDim2.fromScale(1,0) and b.Size == UDim2.fromOffset(0,56) then
-                for c,d in pairs(b:GetChildren()) do
-                    if d.LayoutOrder == 1 and d:IsA('TextButton') then
-                local txt = d:FindFirstChild('TextLabel')
-                if txt and txt.Text and txt.Text:find("Start",1,true) then
-                    StartButton = d
-                end
-                end
-            end
-        end
-    end
-end
-end
     -- // Callbacks
         -- // Boss Rush
 local function autoSelectCard()
@@ -256,7 +258,8 @@ local function Bulma()
                     if wishMeter then
                         local currentValue = wishMeter:GetAttribute("Value")
                         local maxValue = wishMeter:GetAttribute("MaxValue")
-                        if currentValue and maxValue and maxValue > 0 and currentValue >= maxValue and bulma:WaitForChild('Stunned').Value == false then
+                        if currentValue == maxValue and bulma:WaitForChild('Stunned').Value == false then
+                            task.wait(3)
                             local chosenWishName = Options.G_Special_BulmaWish.Value
                             local wishNumber = wishMapping[chosenWishName]
                             if wishNumber then
@@ -541,9 +544,7 @@ SaveManager:SetFolder("coolstuff/als-autocard")
 SaveManager:BuildConfigSection(Tabs["UI Settings"])
 ThemeManager:ApplyToTab(Tabs["UI Settings"])
 
-if not StartButton then
 Refresh(Plr:WaitForChild('Slots'), AbilityList, 'table' ,'Value')
 ABL:SetValues(AbilityList)
-end
 
 SaveManager:LoadAutoloadConfig()
