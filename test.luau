@@ -336,7 +336,7 @@ M_LGB:AddCheckbox("Main_AutoExec", {
         if Value then
             if not hasTP then
                 hasTP = Plr.OnTeleport:Connect(function(State)
-                    queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/gix314/coolstuff/refs/heads/main/als-autocard.luau'))()")
+                    queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/0017717/Main/refs/heads/main/test.luau'))()")
                 end)
             end
         else
