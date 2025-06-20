@@ -52,7 +52,7 @@ local Options = Library.Options
 local Toggles = Library.Toggles
 
 if getgenv().script_LOADED == true then
-    return Library:Notify("Script already loaded!", 5)
+   return Library:Notify("Script already loaded!", 5)
 end
 pcall(function() getgenv().script_LOADED = true end)
 
@@ -215,7 +215,7 @@ T1:AddLabel({
 T1:AddDivider()
 T1:AddLabel("<b>Game</b>")
 T1:AddLabel({
-    Text = "Name: "..Asset.Name.."\nID: "..game.PlaceId.."\nPlayers: "..#Players:GetPlayers().."\nMax Players: "..Players.MaxPlayers.."",
+    Text = "Name: "..Asset.Name.."\nID: "..game.PlaceId.."\nPlayers: "..#Plrs:GetPlayers().."\nMax Players: "..Plrs.MaxPlayers.."",
     DoesWrap = true
 })
 T2:AddLabel("<b>mega upd 6/19/25</b>")
