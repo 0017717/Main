@@ -176,111 +176,6 @@ local function Refresh(PATH, name, types, children)
         end
     end
 end
-    -- // Callbacks
-        -- // Boss Rush
-local function autoSelectCard()
-    while Toggles.BR_Toggle.Value do
-        task.wait(0.25)
-        local pG = PGui:FindFirstChild("Prompt")
-        if pG and pG.Parent then
-            local cB, hP, bCB, bCI = nil, 0, nil, nil
-            for _,d in ipairs(pG:GetDescendants()) do
-                if d:IsA("TextButton") then
-                    if d.Position == UDim2.fromScale(0.5,0.5) then
-                        local tS = d:FindFirstChild("TextLabel") or d
-                        if tS and tS.Text and tS.Text:find("Choose a card",1,true) then cB = d end
-                    else
-                        local tCF = d:FindFirstChild("Frame")
-                        if tCF then
-                            local tL = tCF:FindFirstChildOfClass("TextLabel")
-                            if tL then
-                                local cN = tL.Text
-                                local p = Options.CardPriorities[cN] or 0
-                                if p > hP then
-                                    hP = p
-                                    bCB = d
-                                    local pX = d.Position.X.Scale
-                                    if math.abs(pX - 0.125) < 0.05 then bCI = 1
-                                    elseif math.abs(pX - 0.375) < 0.05 then bCI = 2
-                                    elseif math.abs(pX - 0.625) < 0.05 then bCI = 3
-                                    elseif math.abs(pX - 0.875) < 0.05 then bCI = 4 end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-            if bCB and cB and bCI then
-                local tS = cB:FindFirstChildOfClass("TextLabel") or cB
-                local iT = tS.Text
-                Library:Notify("Found card: "..bCB.Frame.TextLabel.Text.." (Priority: "..hP..")",3)
-                fireClick(bCB)
-                local sT = tick()
-                local wR = false
-                while tick() - sT < 2 do
-                    local cTS = cB:FindFirstChildOfClass("TextLabel") or cB
-                    if cTS.Text ~= iT and cTS.Text ~= "" then wR = true; break end
-                    task.wait()
-                end
-                if wR then fireClick(cB) end
-                repeat task.wait() until not PlayerGui:FindFirstChild("Prompt")
-            end
-        end
-    end
-end
-
--- // Ability
-    -- // Universal
-local function AutoAbility()
-    while Toggles.G_AutoAbility.Value do
-        pcall(function()
-            if Toggles.G_AutoAbility.Value and Options.G_AbilityList.Value then
-                for unitName, isSelected in pairs(Options.G_AbilityList.Value) do
-                    if isSelected then
-                        local towerInstance = workspace.Towers:FindFirstChild(unitName)
-                        if towerInstance then
-                            Remotes.Auto:FireServer(towerInstance, 1, true)
-                        end
-                    end
-                end
-            end
-        task.wait(3)
-    Flags.Auto.Ability.Universal = nil
-    end)
-    end
-end
-    -- // Boss
-    -- // Special
-        -- Bulma
-local function Bulma()
-    local wishMapping = {Power = 1, Time = 2, Wealth = 3}
-     if Toggles.G_Special_Bulma.Value and not Flags.Auto.Ability.Special.Bulma.Used and not StartButton then
-                local bulma = workspace.Towers:WaitForChild("Bulma")
-                if bulma then
-                    local wishMeter = bulma:WaitForChild("Meters") and bulma.Meters:FindFirstChild("Wish Balls")
-                    if wishMeter then
-                        local currentValue = wishMeter:GetAttribute("Value")
-                        local maxValue = wishMeter:GetAttribute("MaxValue")
-                        if currentValue >= maxValue and bulma:WaitForChild('Stunned').Value == false then
-                            task.wait(3)
-                            local chosenWishName = Options.G_Special_BulmaWish.Value
-                            local wishNumber = wishMapping[chosenWishName]
-                            if wishNumber then
-                                Remotes.Ability:InvokeServer(bulma, 1)
-                                task.wait(4)
-                                Remotes.Ability:InvokeServer(bulma, wishNumber)
-                            --    Library:Notify("Used Bulma's wish for: "..chosenWishName,5)
-                                Flags.Auto.Ability.Special.Bulma.Used = true
-                            end
-                        end
-                    end
-                end
-            end
-
-            if Flags.Auto.Ability.Special.Bulma.Used and PlayerGui:WaitForChild("EndGameUI") then
-                Flags.Auto.Ability.Special.Bulma.Used = false
-            end
-end
 
     -- // Import
 local s, r = pcall(function()
@@ -490,6 +385,114 @@ G_T2:AddCheckbox("G_Special_Bulma", {
         end
     end
 })
+
+
+    -- // Callbacks
+        -- // Boss Rush
+local function autoSelectCard()
+    while Toggles.BR_Toggle.Value do
+        task.wait(0.25)
+        local pG = PGui:FindFirstChild("Prompt")
+        if pG and pG.Parent then
+            local cB, hP, bCB, bCI = nil, 0, nil, nil
+            for _,d in ipairs(pG:GetDescendants()) do
+                if d:IsA("TextButton") then
+                    if d.Position == UDim2.fromScale(0.5,0.5) then
+                        local tS = d:FindFirstChild("TextLabel") or d
+                        if tS and tS.Text and tS.Text:find("Choose a card",1,true) then cB = d end
+                    else
+                        local tCF = d:FindFirstChild("Frame")
+                        if tCF then
+                            local tL = tCF:FindFirstChildOfClass("TextLabel")
+                            if tL then
+                                local cN = tL.Text
+                                local p = Options.CardPriorities[cN] or 0
+                                if p > hP then
+                                    hP = p
+                                    bCB = d
+                                    local pX = d.Position.X.Scale
+                                    if math.abs(pX - 0.125) < 0.05 then bCI = 1
+                                    elseif math.abs(pX - 0.375) < 0.05 then bCI = 2
+                                    elseif math.abs(pX - 0.625) < 0.05 then bCI = 3
+                                    elseif math.abs(pX - 0.875) < 0.05 then bCI = 4 end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            if bCB and cB and bCI then
+                local tS = cB:FindFirstChildOfClass("TextLabel") or cB
+                local iT = tS.Text
+                Library:Notify("Found card: "..bCB.Frame.TextLabel.Text.." (Priority: "..hP..")",3)
+                fireClick(bCB)
+                local sT = tick()
+                local wR = false
+                while tick() - sT < 2 do
+                    local cTS = cB:FindFirstChildOfClass("TextLabel") or cB
+                    if cTS.Text ~= iT and cTS.Text ~= "" then wR = true; break end
+                    task.wait()
+                end
+                if wR then fireClick(cB) end
+                repeat task.wait() until not PlayerGui:FindFirstChild("Prompt")
+            end
+        end
+    end
+end
+
+-- // Ability
+    -- // Universal
+local function AutoAbility()
+    while Toggles.G_AutoAbility.Value do
+        pcall(function()
+            if Toggles.G_AutoAbility.Value and Options.G_AbilityList.Value then
+                for unitName, isSelected in pairs(Options.G_AbilityList.Value) do
+                    if isSelected then
+                        local towerInstance = workspace.Towers:FindFirstChild(unitName)
+                        if towerInstance then
+                            Remotes.Auto:FireServer(towerInstance, 1, true)
+                        end
+                    end
+                end
+            end
+        task.wait(3)
+    Flags.Auto.Ability.Universal = nil
+    end)
+    end
+end
+    -- // Boss
+    -- // Special
+        -- Bulma
+local function Bulma()
+    local wishMapping = {Power = 1, Time = 2, Wealth = 3}
+     if Toggles.G_Special_Bulma.Value and not Flags.Auto.Ability.Special.Bulma.Used and not StartButton then
+                local bulma = workspace.Towers:WaitForChild("Bulma")
+                if bulma then
+                    local wishMeter = bulma:WaitForChild("Meters") and bulma.Meters:FindFirstChild("Wish Balls")
+                    if wishMeter then
+                        local currentValue = wishMeter:GetAttribute("Value")
+                        local maxValue = wishMeter:GetAttribute("MaxValue")
+                        if currentValue >= maxValue and bulma:WaitForChild('Stunned').Value == false then
+                            task.wait(3)
+                            local chosenWishName = Options.G_Special_BulmaWish.Value
+                            local wishNumber = wishMapping[chosenWishName]
+                            if wishNumber then
+                                Remotes.Ability:InvokeServer(bulma, 1)
+                                task.wait(4)
+                                Remotes.Ability:InvokeServer(bulma, wishNumber)
+                            --    Library:Notify("Used Bulma's wish for: "..chosenWishName,5)
+                                Flags.Auto.Ability.Special.Bulma.Used = true
+                            end
+                        end
+                    end
+                end
+            end
+
+            if Flags.Auto.Ability.Special.Bulma.Used and PlayerGui:WaitForChild("EndGameUI") then
+                Flags.Auto.Ability.Special.Bulma.Used = false
+            end
+end
+
 
 -- // UI Settings
 local MenuGroup = Tabs["UI Settings"]:AddLeftGroupbox("Menu", "wrench")
