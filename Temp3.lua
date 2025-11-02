@@ -44,9 +44,6 @@ local Options = Library.Options
 local Toggles = Library.Toggles
 
 -- // Variables
-local Remotes = {
-	Damage = Services.RS.Remotes:WaitForChild("Damage"),
-}
 s, e = pcall(function()
 -- // UI Setup
 local Window = Library:CreateWindow({
